@@ -208,6 +208,27 @@ class FloorplanPanel(wx.Panel):
             [x.as_dict for x in self.survey_points],
             cls=SafeEncoder
         )
+        # iwlib returns the 'stats' block items 'level' and 'noise' as dBm values. 
+        # These values are stored in a 8bit encoded integer. Python deals with the encoding
+        # of these integers as though they were normal ints. This code corrects that. 
+        # The encoding for the 8bit binary number is between -192 and 63 in iwlib.
+        res = json.loads(res)
+        for pindex, point in enumerate(res):
+            iwconfig = point['result']['iwconfig']['stats']
+            iwconfig['level'] = iwconfig['level'] - 256 if iwconfig['level'] > 63 else iwconfig['level']
+            iwconfig['noise'] = iwconfig['noise'] - 256 if iwconfig['noise'] > 63 else iwconfig['noise']
+
+            iwscan = point['result']['iwscan']
+            for index, item in enumerate(iwscan):
+                level = item['stats']['level'] - 256 if item['stats']['level'] > 63 else item['stats']['level']
+                noise = item['stats']['noise'] - 256 if item['stats']['noise'] > 63 else item['stats']['noise']
+                iwscan[index]['stats']['level'] = level
+                iwscan[index]['stats']['noise'] = noise
+            res[pindex]['result']['iwconfig'] = iwconfig
+            res[pindex]['result']['iwscan'] = iwscan
+
+        res = json.dumps(res)
+
         with open(self.data_filename, 'w') as fh:
             fh.write(res)
         self.parent.SetStatusText(
