@@ -137,6 +137,10 @@ class HeatMapGenerator(object):
         self._layout = imread(self._image_path)
         self._image_width = len(self._layout[0])
         self._image_height = len(self._layout) - 1
+        font = {'family' : 'Arial',
+                'size'   : 4}
+        matplotlib.rc('font', **font)
+
         logger.debug(
             'Loaded image with width=%d height=%d',
             self._image_width, self._image_height
@@ -177,8 +181,8 @@ class HeatMapGenerator(object):
         gx, gy = np.meshgrid(x, y)
         gx, gy = gx.flatten(), gy.flatten()
         for k, ptitle in {
-            'rssi': 'RSSI (level)',
-            'quality': 'iwstats Quality',
+            'rssi': 'RSSI (level in dBm)',
+            'quality': 'iwstats Quality (%)',
             'tcp_upload_Mbps': 'TCP Upload Mbps',
             'tcp_download_Mbps': 'TCP Download Mbps',
             'udp_Mbps': 'UDP Upload Mbps',
@@ -233,7 +237,7 @@ class HeatMapGenerator(object):
         ax.set_xticks(ticks)
         #ax.set_xticklabels(names)
         logger.info('Writing plot to: %s', fname)
-        pp.savefig(fname, dpi=300)
+        pp.savefig(fname, dpi=1200)
         pp.close('all')
 
     def _channel_graphs(self):
@@ -313,7 +317,7 @@ class HeatMapGenerator(object):
         # end plotting points
         fname = '%s_%s.png' % (key, self._title)
         logger.info('Writing plot to: %s', fname)
-        pp.savefig(fname, dpi=300)
+        pp.savefig(fname, dpi=1200)
         pp.close('all')
 
 
