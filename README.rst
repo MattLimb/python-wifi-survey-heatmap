@@ -31,7 +31,7 @@ At each survey location, data collection should take 45-60 seconds. The data col
 * 10-second iperf3 measurement, TCP, client (this app) sending to server, default iperf3 options
 * 10-second iperf3 measurement, TCP, server sending to client, default iperf3 options
 * 10-second iperf3 measurement, UDP, client (this app) sending to server, default iperf3 options
-* ``iwconfig`` capture for current AP/ESSID/BSSID, frequency, bitrate, and quality/level/noise stats
+* ``iwconfig`` capture for current AP/ESSID/BSSID, frequency, bitrate, and quality (%)/level (dBm)/noise (dBm) stats
 * ``iwlist`` scan of all visible access points
 
 Usage
@@ -72,8 +72,8 @@ The end result of this process for a given survey (Title) should be XX ``.png`` 
 * **channels24_TITLE.png** - Bar graph of average signal quality of APs seen on 2.4 GHz channels, by channel. Useful for visualizing channel contention. (Based on 20 MHz channel bandwidth)
 * **channels5_TITLE.png** - Bar graph of average signal quality of APs seen on 5 GHz channels, by channel. Useful for visualizing channel contention. (Based on per-channel bandwidth from 20 to 160 MHz)
 * **jitter_TITLE.png** - Heatmap based on UDP jitter measurement in milliseconds.
-* **quality_TITLE.png** - Heatmap based on iwconfig's "quality" metric.
-* **rssi_TITLE.png** - Heatmap based on iwconfig's signal strength (rssi) metric.
+* **quality_TITLE.png** - Heatmap based on iwconfig's "quality" metric measured in percent (%).
+* **rssi_TITLE.png** - Heatmap based on iwconfig's signal strength (rssi) metric measured in dBm.
 * **tcp_download_Mbps_TITLE.png** - Heatmap of iperf3 transfer rate, TCP, downloading from server to client.
 * **tcp_upload_Mbps_TITLE.png** - Heatmap of iperf3 transfer rate, TCP, uploading from client to server.
 * **udp_Mbps_TITLE.png** - Heatmap of iperf3 transfer rate, UDP, uploading from client to server.
@@ -111,13 +111,13 @@ Jitter
 .. image:: examples/jitter_WAP1.png
    :alt: example jitter heatmap
 
-Quality
+Quality (Percentage %)
 +++++++
 
 .. image:: examples/quality_WAP1.png
    :alt: example quality heatmap
 
-RSSI / Signal Strength
+RSSI / Signal Strength (dBm)
 ++++++++++++++++++++++
 
 .. image:: examples/rssi_WAP1.png
