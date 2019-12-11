@@ -204,7 +204,7 @@ class FloorplanPanel(wx.Panel):
             'Saving to: %s' % self.data_filename
         )
         self.Refresh()
-        res = json.dumps(
+        res = json.loads(
             [x.as_dict for x in self.survey_points],
             cls=SafeEncoder
         )
@@ -212,7 +212,6 @@ class FloorplanPanel(wx.Panel):
         # These values are stored in a 8bit encoded integer. Python deals with the encoding
         # of these integers as though they were normal ints. This code corrects that. 
         # The encoding for the 8bit binary number is between -192 and 63 in iwlib.
-        res = json.loads(res)
         for pindex, point in enumerate(res):
             iwconfig = point['result']['iwconfig']['stats']
             iwconfig['level'] = iwconfig['level'] - 256 if iwconfig['level'] > 63 else iwconfig['level']
@@ -227,10 +226,8 @@ class FloorplanPanel(wx.Panel):
             res[pindex]['result']['iwconfig'] = iwconfig
             res[pindex]['result']['iwscan'] = iwscan
 
-        res = json.dumps(res)
-
         with open(self.data_filename, 'w') as fh:
-            fh.write(res)
+            fh.write(json.dumps(res))
         self.parent.SetStatusText(
             'Saved to %s; ready...' % self.data_filename
         )
